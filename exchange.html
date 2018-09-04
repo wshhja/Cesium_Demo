@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>转换</title>
+</head>
+<script>
+    function LonLatToDMS(lon,lat) {
+        var lat_DMS={'D':0,'M':0,'S':0};
+        var lon_DMS={'D':0,'M':0,'S':0};
+        var lat_int=parseInt(lat);//度
+        lat-=lat_int;
+        var lon_int=parseInt(lon);
+        lon-=lon_int;
+        lat_DMS.D=lat_int;
+        lon_DMS.D=lon_int;
+
+        lat*=60;//分
+        lon*=60;
+        lat_int=parseInt(lat);
+        lat-=lat_int;
+        lon_int=parseInt(lon);
+        lon-=lon_int;
+        lon=(lon*60).toFixed(8);
+        lat=(lat*60).toFixed(8);
+        lat_DMS.M=lat_int;
+        lon_DMS.M=lon_int;
+        lat_DMS.S=lat;
+        lon_DMS.S=lon;
+        return {'longitude': lon_DMS,'latitude': lat_DMS};
+    }
+
+    function DMSToLonLat(dfs) {
+        var dms_int=dfs.D;
+        var dms_float=(dfs.M+dfs.S/60)/60;
+        var result=(dms_int+dms_float).toFixed(8);
+        console.log(result+"++++++++++++++++++++");
+        return result;
+    }
+
+function click1() {
+    var lat=document.getElementById('lan').value;
+    var lon=document.getElementById('lon').value;
+
+    var result=LonLatToDMS(lon,lat);
+
+    document.getElementById('DFM_lan').value=result.latitude.D+'°'+result.latitude.M+'′'+result.latitude.S+'″';
+    document.getElementById('DFM_lon').value=result.longitude.D+'°'+result.longitude.M+'′'+result.longitude.S+'″';
+}
+
+function click2() {
+    var DMS_lat=document.getElementById('DFM_lan').value;
+    document.getElementById('lan').value=DMS_lat;
+}
+</script>
+<body>
+<div>
+    <label for="lan">经度</label><input type="text" id="lan"/>
+</div>
+
+<div>
+    <label for="lon">纬度</label><input type="text" id="lon"/>
+</div>
+<button id="btn1" onclick="click1()">1</button>
+<div>
+    <label for="DFM_lan">纬度_DMS</label><input type="text" id="DFM_lan"/>
+</div>
+
+<div>
+    <label for="DFM_lon">纬度_DMS</label><input type="text" id="DFM_lon"/>
+</div>
+<button id="btn2" onclick="click2()">2</button>
+<canvas id="graph" width="400" height="250" style="border: solid black 1px"></canvas>
+</body>
+</html>
